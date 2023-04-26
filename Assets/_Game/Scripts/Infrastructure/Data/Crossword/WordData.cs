@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Core.Infrastructure.Data.Crossword
 {
@@ -6,8 +7,14 @@ namespace Core.Infrastructure.Data.Crossword
     public class WordData
     {
         public string answer;
+        
+        [Tooltip("Can only be 'across' or 'down'.")]
         public string direction;
+        
+        [Range(0, 9)]
         public int column;
+        
+        [Range(0, 9)]
         public int row;
     }
 }

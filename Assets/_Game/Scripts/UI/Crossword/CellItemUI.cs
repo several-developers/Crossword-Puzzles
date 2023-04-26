@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Core.UI.GridView
+namespace Core.UI.Crossword
 {
     public class CellItemUI : MonoBehaviour
     {
