@@ -20,7 +20,7 @@ namespace Core.Infrastructure.Services.GameScene
             
             SetupAnswersDataDictionary();
         }
-
+        
         private readonly IGameDataService _gameDataService;
         private readonly ErrorBehaviour _errorBehaviour;
         private readonly Dictionary<int, AnswerData> _answersDataDictionary;

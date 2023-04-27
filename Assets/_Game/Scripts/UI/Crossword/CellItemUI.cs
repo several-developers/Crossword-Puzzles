@@ -15,6 +15,11 @@ namespace Core.UI.Crossword
         [SerializeField]
         private TextMeshProUGUI _charTMP;
 
+        [SerializeField]
+        private CellRotateAnimation _cellRotateAnimation;
+
+        public bool HasRotated { get; private set; }
+
         public void SetColor(bool isGray)
         {
             Color color = isGray ? _grayColor : Color.white;
@@ -23,5 +28,29 @@ namespace Core.UI.Crossword
 
         public void SetChar(char letter) =>
             _charTMP.text = letter.ToString();
+
+        public void HideChar() =>
+            _charTMP.enabled = false;
+
+        public void ResetCell()
+        {
+            HasRotated = false;
+            
+            StopRotateAnimation();
+            HideChar();
+            SetColor(isGray: true);
+            SetChar(' ');
+        }
+
+        [ContextMenu("Start Rotate Animation")]
+        public void StartRotateAnimation()
+        {
+            HasRotated = true;
+            _cellRotateAnimation.StartAnimation();
+        }
+
+        [ContextMenu("Stop Rotate Animation")]
+        public void StopRotateAnimation() =>
+            _cellRotateAnimation.StopAnimation();
     }
 }

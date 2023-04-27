@@ -17,9 +17,6 @@ namespace Core.Editor
         private static GameDataViewerMeta _gameDataViewerMeta;
         private static bool _metaFound;
 
-        [UnityEditor.Callbacks.DidReloadScripts]
-        private static void OnScriptsReloaded() => UpdateWindow();
-
         public static void ShowWindow()
         {
             UpdateWindow();
@@ -47,6 +44,15 @@ namespace Core.Editor
 
             _metaFound = true;
             _gameDataViewerEditor = UnityEditor.Editor.CreateEditor(_gameDataViewerMeta);
+        }
+
+        [UnityEditor.Callbacks.DidReloadScripts]
+        private static void OnScriptsReloaded()
+        {
+            if (!HasOpenInstances<GameDataViewer>())
+                return;
+            
+            UpdateWindow();
         }
 
         private void OnGUI()

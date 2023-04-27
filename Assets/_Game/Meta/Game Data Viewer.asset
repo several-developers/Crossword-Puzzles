@@ -18,7 +18,7 @@ MonoBehaviour:
         shakeOnError: 1
         playSoundOnError: 0
     crosswordData:
-      crosswordName: Best Crossword in Belarus
+      crosswordName: Best Crossword in the Belarus
       gridHelper:
       - ' -> Don''t edit! <- '
       - 0 1 2 3 4 5 6 7 8 9

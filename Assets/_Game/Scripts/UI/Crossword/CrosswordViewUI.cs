@@ -17,7 +17,7 @@ namespace Core.UI.Crossword
             _crosswordService = crosswordService;
             _saveAndLoadService = saveAndLoadService;
             _crosswordViewLogic = new(crosswordService, gameDataService, _cellItemPrefab, _cellsContainer,
-                coroutineRunner: this, _gridLayoutGroup, _playerIF);
+                coroutineRunner: this, _gridLayoutGroup, _playerIF, _errorSoundAs, _crosswordViewShakeAnimation);
         }
 
         [SerializeField]
@@ -34,6 +34,12 @@ namespace Core.UI.Crossword
 
         [SerializeField]
         private GridLayoutGroup _gridLayoutGroup;
+
+        [SerializeField]
+        private AudioSource _errorSoundAs;
+
+        [SerializeField]
+        private CrosswordViewShakeAnimation _crosswordViewShakeAnimation;
         
         private ICrosswordService _crosswordService;
         private ISaveAndLoadService _saveAndLoadService;
@@ -45,7 +51,8 @@ namespace Core.UI.Crossword
             DebugEvents.OnCreateCrossword += OnCreateCrossword;
         }
 
-        private void Start() => CreateCrossword();
+        private void Start() =>
+            _crosswordViewLogic.CreateCrossword();
 
         private void OnDestroy()
         {
@@ -53,20 +60,21 @@ namespace Core.UI.Crossword
             DebugEvents.OnCreateCrossword -= OnCreateCrossword;
         }
 
-        private void CreateCrossword() =>
-            _crosswordViewLogic.CreateCrossword();
-
         private void OnOkClicked() =>
             _crosswordViewLogic.ClickLogic();
 
+        private void OnCreateCrossword() => DebugCreateCrossword();
+        
         [ContextMenu("Create Crossword")]
         private void DebugCreateCrossword()
         {
             _saveAndLoadService.LoadGameData();
             _crosswordService.UpdateAnswersData();
-            CreateCrossword();
+            _crosswordViewLogic.UpdateCrossword();
         }
 
-        private void OnCreateCrossword() => DebugCreateCrossword();
+        [ContextMenu("Start Shake Animation")]
+        private void DebugStartShakeAnimation() =>
+            _crosswordViewShakeAnimation.StartAnimation();
     }
 }

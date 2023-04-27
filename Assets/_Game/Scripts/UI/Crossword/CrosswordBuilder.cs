@@ -1,23 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using Core.Crossword;
 using UnityEngine;
 
 namespace Core.UI.Crossword
 {
     public class CrosswordBuilder
     {
-        private struct GridPosition
-        {
-            public GridPosition(int x, int y)
-            {
-                X = x;
-                Y = y;
-            }
-            
-            public int X { get; }
-            public int Y { get; }
-        }
-        
         public CrosswordBuilder(CellItemUI cellItemPrefab, Transform cellsContainer)
         {
             _cellItemPrefab = cellItemPrefab;
@@ -43,15 +32,19 @@ namespace Core.UI.Crossword
                     CellItemUI cellItemInstance = Object.Instantiate(_cellItemPrefab, _cellsContainer);
                     GridPosition gridPosition = new(column, row);
                     cellItemInstance.SetColor(isGray: true);
+                    cellItemInstance.HideChar();
                     _cellItemsDictionary.Add(gridPosition, cellItemInstance);
                 }
             }
         }
 
-        public bool TryGetCellItem(int column, int row, out CellItemUI cellItem)
+        public bool TryGetCellItem(GridPosition gridPosition, out CellItemUI cellItem) =>
+            _cellItemsDictionary.TryGetValue(gridPosition, out cellItem);
+
+        public void ClearCellItems()
         {
-            GridPosition gridPosition = new(column, row);
-            return _cellItemsDictionary.TryGetValue(gridPosition, out cellItem);
+            foreach (CellItemUI cellItemInstance in _cellItemsDictionary.Values)
+                cellItemInstance.ResetCell();
         }
 
         private void RemoveCellItems()

@@ -25,13 +25,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8443532960739105483}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6113600545911263210}
-  m_RootOrder: 1
+  m_Father: {fileID: 6113600546661741766}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -264,9 +264,18 @@ MonoBehaviour:
   _grayColor: {r: 0.6313726, g: 0.6313726, b: 0.6313726, a: 1}
   _background: {fileID: 6113600546661741767}
   _charTMP: {fileID: 1517212295729625895}
---- !u!224 &6113600545911263210 stripped
+  _cellRotateAnimation:
+    _rotateValue: {x: 0, y: 180, z: 0}
+    _duration: 1
+    _showCharDelay: 0.5
+    _ease: 7
+    _rotateMode: 3
+    _targetRT: {fileID: 6113600546661741766}
+    _charRT: {fileID: 2363020600008625289}
+    _charTMP: {fileID: 1517212295729625895}
+--- !u!224 &6113600546661741766 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3840123105037374116, guid: 91ba5a2faf5185e40b9868c9e1388780, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3840123104848325000, guid: 91ba5a2faf5185e40b9868c9e1388780, type: 3}
   m_PrefabInstance: {fileID: 7033783486102707534}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &6113600546661741767 stripped
