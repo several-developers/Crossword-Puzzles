@@ -11,7 +11,6 @@ namespace Core.Infrastructure.Data.Crossword
             wordsData = Array.Empty<WordData>();
         }
 
-        public string crosswordName;
         public string[] gridHelper;
         public WordData[] wordsData;
     }

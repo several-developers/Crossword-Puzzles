@@ -47,12 +47,6 @@ namespace Core.UI.Crossword
             UpdateCrosswordView();
         }
 
-        public void UpdateCrossword()
-        {
-            _crosswordBuilder.ClearCellItems();
-            UpdateCrosswordView();
-        }
-
         public void ClickLogic()
         {
             if (_playerIF.text.Length == 0)

@@ -32,16 +32,6 @@ namespace Core.UI.Crossword
         public void HideChar() =>
             _charTMP.enabled = false;
 
-        public void ResetCell()
-        {
-            HasRotated = false;
-            
-            StopRotateAnimation();
-            HideChar();
-            SetColor(isGray: true);
-            SetChar(' ');
-        }
-
         [ContextMenu("Start Rotate Animation")]
         public void StartRotateAnimation()
         {

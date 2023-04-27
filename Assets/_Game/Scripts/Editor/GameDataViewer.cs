@@ -67,19 +67,21 @@ namespace Core.Editor
                 UpdateWindow();
 
             _gameDataViewerEditor.OnInspectorGUI();
+            
+            GUIStyle labelStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleCenter
+            };
 
             GUILayout.Space(5);
+            GUILayout.Label("----- Debug Buttons -----", labelStyle);
 
             if (GUILayout.Button(SaveGameData))
                 _gameDataViewerMeta.SaveGameData();
 
             if (GUILayout.Button(LoadGameData))
                 _gameDataViewerMeta.LoadGameData();
-
-            GUIStyle labelStyle = new GUIStyle(GUI.skin.label)
-            {
-                alignment = TextAnchor.MiddleCenter
-            };
+            
             GUILayout.Space(5);
             GUILayout.Label("----- Runtime Only -----", labelStyle);
 

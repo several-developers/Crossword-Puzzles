@@ -41,12 +41,6 @@ namespace Core.UI.Crossword
         public bool TryGetCellItem(GridPosition gridPosition, out CellItemUI cellItem) =>
             _cellItemsDictionary.TryGetValue(gridPosition, out cellItem);
 
-        public void ClearCellItems()
-        {
-            foreach (CellItemUI cellItemInstance in _cellItemsDictionary.Values)
-                cellItemInstance.ResetCell();
-        }
-
         private void RemoveCellItems()
         {
             List<CellItemUI> cellItemsList = _cellItemsDictionary.Values.ToList();

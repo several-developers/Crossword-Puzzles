@@ -1,15 +1,15 @@
 using System.IO;
 using Core.Infrastructure.Data;
-using Core.Infrastructure.Providers.GameScene;
 using UnityEngine;
 
 namespace Core.Infrastructure.Services.Global
 {
+    #warning Need rework.
     public class SaveAndLoadService : ISaveAndLoadService
     {
         public SaveAndLoadService(IGameDataService gameDataService)
         {
-            _dataPath = Application.persistentDataPath + "/GameData.json";
+            _dataPath = "Assets/Resources/GameConfig.json";
             _gameDataService = gameDataService;
             _gameData = gameDataService.GetGameData();
 
@@ -54,7 +54,7 @@ namespace Core.Infrastructure.Services.Global
 
             _gameData.crosswordData.gridHelper = GetGridHelper();
         }
-        
+
         private static string[] GetGridHelper()
         {
             string[] gridHelper = {

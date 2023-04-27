@@ -70,7 +70,7 @@ namespace Core.UI.Crossword
         {
             _saveAndLoadService.LoadGameData();
             _crosswordService.UpdateAnswersData();
-            _crosswordViewLogic.UpdateCrossword();
+            _crosswordViewLogic.CreateCrossword();
         }
 
         [ContextMenu("Start Shake Animation")]

@@ -64,7 +64,7 @@ namespace Core.Infrastructure.Services.GameScene
                     break;
 
                 int length = wordData.answer.Length;
-                bool isDown = string.Equals(wordData.direction, "down", StringComparison.OrdinalIgnoreCase);
+                bool isDown = string.Equals(wordData.direction.ToLower(), "down", StringComparison.OrdinalIgnoreCase);
                 Direction direction = isDown ? Direction.Down : Direction.Across;
                 AnswerData answerData = new(direction, wordData.column, wordData.row, length);
                 _answersDataDictionary.Add(hashCode, answerData);
