@@ -13,6 +13,7 @@ namespace Core.Editor
 
         private const string BootstrapSceneMenuItem = ScenesMenuItem + "🚀 Bootstrap";
         private const string GameSceneMenuItem = ScenesMenuItem + "⚔ Game";
+        private const string GameDataViewerMenuItem = GameMenuItem + "⚙ Game Data Viewer";
         private const string RunGameMenuItem = GameMenuItem + "🎮 Run Game";
 
         private const string BootstrapScenePath = ScenesPath + "Bootstrap.unity";
@@ -25,6 +26,10 @@ namespace Core.Editor
         [MenuItem(GameSceneMenuItem)]
         private static void LoadGameScene() =>
             OpenScene(GameScenePath);
+        
+        [MenuItem(GameDataViewerMenuItem)]
+        public static void ShowWindow() =>
+            GameDataViewer.ShowWindow();
 
         [MenuItem(RunGameMenuItem)]
         public static void RunGame()

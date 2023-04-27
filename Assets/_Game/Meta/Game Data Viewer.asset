@@ -13,9 +13,14 @@ MonoBehaviour:
   m_Name: Game Data Viewer
   m_EditorClassIdentifier: 
   _gameData:
+    playerData:
+      errorBehaviour:
+        shakeOnError: 1
+        playSoundOnError: 0
     crosswordData:
       crosswordName: Best Crossword in Belarus
       gridHelper:
+      - ' -> Don''t edit! <- '
       - 0 1 2 3 4 5 6 7 8 9
       - "1 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610"
       - "2 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610"
@@ -27,11 +32,23 @@ MonoBehaviour:
       - "8 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610"
       - "9 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610 \u2610"
       wordsData:
-      - answer: Wow
+      - answer: Gamedev
         direction: across
         column: 1
-        row: 3
-      - answer: Omagad
+        row: 0
+      - answer: Making
+        direction: down
+        column: 3
+        row: 0
+      - answer: Games
         direction: across
         column: 3
-        row: 6
+        row: 5
+      - answer: Help
+        direction: down
+        column: 6
+        row: 4
+      - answer: Paper
+        direction: across
+        column: 4
+        row: 7

@@ -1,15 +1,28 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Core.UI.Crossword
 {
     public class CrosswordBuilder
     {
+        private struct GridPosition
+        {
+            public GridPosition(int x, int y)
+            {
+                X = x;
+                Y = y;
+            }
+            
+            public int X { get; }
+            public int Y { get; }
+        }
+        
         public CrosswordBuilder(CellItemUI cellItemPrefab, Transform cellsContainer)
         {
             _cellItemPrefab = cellItemPrefab;
             _cellsContainer = cellsContainer;
-            _cellItemsList = new(capacity: 100);
+            _cellItemsDictionary = new(capacity: Columns * Rows);
         }
         
         private const int Columns = 10;
@@ -17,36 +30,38 @@ namespace Core.UI.Crossword
         
         private readonly CellItemUI _cellItemPrefab;
         private readonly Transform _cellsContainer;
-        private readonly List<CellItemUI> _cellItemsList;
-        
+        private readonly Dictionary<GridPosition, CellItemUI> _cellItemsDictionary;
+
         public void BuildCrossword()
         {
             RemoveCellItems();
             
-            int iterations = Columns * Rows;
-            bool isGrayColor = false;
-
-            for (int i = 0; i < iterations; i++)
+            for (int row = 0; row < Rows; row++)
             {
-                CellItemUI cellItemInstance = Object.Instantiate(_cellItemPrefab, _cellsContainer);
-                cellItemInstance.SetColor(isGrayColor);
-                _cellItemsList.Add(cellItemInstance);
-                    
-                bool isNewRow = (i + 1) % Columns == 0;
-                
-                if (isNewRow)
-                    continue;
-
-                isGrayColor = !isGrayColor;
+                for (int column = 0; column < Columns; column++)
+                {
+                    CellItemUI cellItemInstance = Object.Instantiate(_cellItemPrefab, _cellsContainer);
+                    GridPosition gridPosition = new(column, row);
+                    cellItemInstance.SetColor(isGray: true);
+                    _cellItemsDictionary.Add(gridPosition, cellItemInstance);
+                }
             }
         }
-        
+
+        public bool TryGetCellItem(int column, int row, out CellItemUI cellItem)
+        {
+            GridPosition gridPosition = new(column, row);
+            return _cellItemsDictionary.TryGetValue(gridPosition, out cellItem);
+        }
+
         private void RemoveCellItems()
         {
-            foreach (CellItemUI cellItemInstance in _cellItemsList)
+            List<CellItemUI> cellItemsList = _cellItemsDictionary.Values.ToList();
+            
+            foreach (CellItemUI cellItemInstance in cellItemsList)
                 Object.Destroy(cellItemInstance.gameObject);
             
-            _cellItemsList.Clear();
+            _cellItemsDictionary.Clear();
         }
     }
 }

@@ -1,15 +1,13 @@
-﻿namespace Core.Infrastructure.Services.GameScene
+﻿using Core.Crossword;
+
+namespace Core.Infrastructure.Services.GameScene
 {
     public interface ICrosswordService
     {
-        bool TryFindMatchWord();
-    }
-
-    public class CrosswordService : ICrosswordService
-    {
-        public bool TryFindMatchWord()
-        {
-            return false;
-        }
+        bool TryFindMatchWord(int hashCode);
+        AnswerData GetAnswerData(int hashCode);
+        AnswerData GetAnswerData(int column, int row);
+        ErrorBehaviour GetErrorBehaviour();
+        void UpdateAnswersData();
     }
 }

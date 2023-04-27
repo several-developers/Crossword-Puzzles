@@ -7,32 +7,24 @@ namespace Core.Infrastructure.Services.Global
 {
     public class SaveAndLoadService : ISaveAndLoadService
     {
-        private SaveAndLoadService() =>
+        public SaveAndLoadService(IGameDataService gameDataService)
+        {
             _dataPath = Application.persistentDataPath + "/GameData.json";
-
-        public SaveAndLoadService(GameData gameData) : this()
-        {
-            _gameData = gameData;
-            CheckGridHelper();
-        }
-
-        public SaveAndLoadService(IGameDataService gameDataService) : this()
-        {
             _gameDataService = gameDataService;
             _gameData = gameDataService.GetGameData();
 
             CheckGridHelper();
             LoadGameData();
         }
-
+        
         private readonly IGameDataService _gameDataService;
         private readonly GameData _gameData;
         private readonly string _dataPath;
 
-        public void SaveGameData()
+        public async void SaveGameData()
         {
             string gameDataJson = JsonUtility.ToJson(_gameData);
-            File.WriteAllText(_dataPath, gameDataJson);
+            await File.WriteAllTextAsync(_dataPath, gameDataJson);
         }
 
         public void LoadGameData()
@@ -63,9 +55,10 @@ namespace Core.Infrastructure.Services.Global
             _gameData.crosswordData.gridHelper = GetGridHelper();
         }
         
-        private string[] GetGridHelper()
+        private static string[] GetGridHelper()
         {
             string[] gridHelper = {
+                " -> Don't edit! <- ",
                 "0 1 2 3 4 5 6 7 8 9",
                 "1 ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐",
                 "2 ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐",

@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using Core.Crossword;
+using Core.Events;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,17 +8,27 @@ namespace Core.Editor
 {
     public class GameDataViewer : EditorWindow
     {
-        private const string GameMenuItem = "🕹 Crossword Puzzle/";
-        private const string GameDataViewerMenuItem = GameMenuItem + "⚙ Game Data Viewer";
         private const string GameDataViewerMetaPath = "Assets/_Game/Meta/Game Data Viewer.asset";
         private const string SaveGameData = "Save Game Data";
         private const string LoadGameData = "Load Game Data";
+        private const string CreateCrossword = "Create Crossword";
 
         private static UnityEditor.Editor _gameDataViewerEditor;
         private static GameDataViewerMeta _gameDataViewerMeta;
+        private static bool _metaFound;
 
-        [MenuItem(GameDataViewerMenuItem)]
-        public static void ShowWindow() => UpdateWindow();
+        [UnityEditor.Callbacks.DidReloadScripts]
+        private static void OnScriptsReloaded() => UpdateWindow();
+
+        public static void ShowWindow()
+        {
+            UpdateWindow();
+
+            if (!_metaFound)
+                return;
+
+            _gameDataViewerMeta.LoadGameData();
+        }
 
         private static void UpdateWindow()
         {
@@ -29,21 +40,45 @@ namespace Core.Editor
             window.titleContent = titleContent;
 
             _gameDataViewerMeta = AssetDatabase.LoadAssetAtPath<GameDataViewerMeta>(GameDataViewerMetaPath);
+            _metaFound = false;
+
+            if (_gameDataViewerMeta == null)
+                return;
+
+            _metaFound = true;
             _gameDataViewerEditor = UnityEditor.Editor.CreateEditor(_gameDataViewerMeta);
         }
 
         private void OnGUI()
         {
+            if (!_metaFound)
+            {
+                EditorGUILayout.LabelField("Error while loading menu. Please reopen 'Game Data Viewer'.");
+                return;
+            }
+
             if (_gameDataViewerEditor == null)
                 UpdateWindow();
-            
+
             _gameDataViewerEditor.OnInspectorGUI();
+
+            GUILayout.Space(5);
 
             if (GUILayout.Button(SaveGameData))
                 _gameDataViewerMeta.SaveGameData();
 
             if (GUILayout.Button(LoadGameData))
                 _gameDataViewerMeta.LoadGameData();
+
+            GUIStyle labelStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleCenter
+            };
+            GUILayout.Space(5);
+            GUILayout.Label("----- Runtime Only -----", labelStyle);
+
+            if (GUILayout.Button(CreateCrossword))
+                DebugEvents.SendCreateCrossword();
         }
     }
 }

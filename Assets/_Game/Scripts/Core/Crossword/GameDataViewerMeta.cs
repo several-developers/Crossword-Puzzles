@@ -12,7 +12,9 @@ namespace Core.Crossword
 
         public void SaveGameData()
         {
-            SaveAndLoadService saveAndLoadService = new(_gameData);
+            GameDataService gameDataService = new();
+            gameDataService.SetGameData(_gameData);
+            SaveAndLoadService saveAndLoadService = new(gameDataService);
             saveAndLoadService.SaveGameData();
         }
 

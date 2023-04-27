@@ -45,11 +45,14 @@ namespace Core.UI.Utilities
 
         private IEnumerator LayoutFixCO()
         {
+            yield return new WaitForEndOfFrame();
+            
             if (_hasSizeFitter)
                 _contentSizeFitter.enabled = true;
             
             _layoutGroup.enabled = true;
             
+            yield return new WaitForEndOfFrame();
             yield return new WaitForSeconds(Delay);
 
             if (_hasSizeFitter)
