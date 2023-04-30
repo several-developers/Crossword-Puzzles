@@ -31,32 +31,22 @@ namespace Core.Utilities
         public static string Print(string log)
         {
             HandleMessage(log, out string logResult);
-            return AddWhite(logResult);
+            return logResult;
         }
 
         public static string Print(string tag, string log)
         {
             string message = $"[<st><b>{tag}</b></>] {log}";
             HandleMessage(message, out string logResult);
-            return AddWhite(logResult);
-        }
-
-        public static void Error(string log)
-        {
-            HandleMessage(log, out string text);
-            PrintMessage(text, true);
-        }
-
-        public static void Error(string log, Object context)
-        {
-            HandleMessage(log, out string text);
-            PrintMessage(text, context, true);
+            return logResult;
         }
 
         private static void HandleMessage(string log, out string result)
         {
             StringBuilder text = new(log);
 
+            text.Insert(0, "<color=white>");
+            
             text.Replace("<rb>", RedFat);
             text.Replace("</rb>", RedFatEndPrefix);
             text.Replace("<gb>", GreenFat);
@@ -84,28 +74,11 @@ namespace Core.Utilities
             text.Replace("</c>", ColorEndPrefix);
             text.Replace("</o>", ColorEndPrefix);
             text.Replace("</p>", ColorEndPrefix);
+
+            int lastIndex = text.Length;
+            text.Insert(lastIndex, "</color>");
+            
             result = text.ToString();
-        }
-
-        private static string AddWhite(string log)
-        {
-            return $"<color=white>{log}</color>";
-        }
-
-        private static void PrintMessage(string text, bool isError = false)
-        {
-            if (isError)
-                Debug.LogError($"<color=white>{text}</color>");
-            else
-                Debug.Log($"<color=white>{text}</color>");
-        }
-
-        private static void PrintMessage(string text, Object context, bool isError = false)
-        {
-            if (isError)
-                Debug.LogError($"<color=white>{text}</color>", context);
-            else
-                Debug.Log($"<color=white>{text}</color>", context);
         }
     }
 }

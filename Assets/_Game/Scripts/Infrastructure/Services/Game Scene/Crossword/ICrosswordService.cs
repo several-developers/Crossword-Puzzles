@@ -7,7 +7,6 @@ namespace Core.Infrastructure.Services.GameScene
         bool TryFindMatchWord(int hashCode);
         AnswerData GetAnswerData(int hashCode);
         AnswerData GetAnswerData(int column, int row);
-        ErrorBehaviour GetErrorBehaviour();
         void UpdateAnswersData();
     }
 }

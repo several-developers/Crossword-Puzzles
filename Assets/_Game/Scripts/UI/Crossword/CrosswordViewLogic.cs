@@ -131,7 +131,7 @@ namespace Core.UI.Crossword
         
         private void HandlePlayerMistake()
         {
-            ErrorBehaviour errorBehaviour = _crosswordService.GetErrorBehaviour();
+            ErrorBehaviour errorBehaviour = _configProvider.GetGameConfig().errorBehaviour;
 
             if (errorBehaviour.shakeOnError)
                 _crosswordViewShakeAnimation.StartAnimation();

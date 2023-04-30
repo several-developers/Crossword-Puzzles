@@ -52,7 +52,6 @@ namespace Core.Infrastructure.Services.BootstrapScene
             yield return new WaitForEndOfFrame();
             
             OnValidationFinished?.Invoke(ValidateResult.Success);
-
         }
 
         private bool CheckForEmptyAnswers()
@@ -137,7 +136,7 @@ namespace Core.Infrastructure.Services.BootstrapScene
                     return false;
                 }
 
-                bool isDownDirection = string.Equals(wordData.direction.ToLower(), "down");
+                bool isDownDirection = string.Equals(wordData.direction, "down", StringComparison.OrdinalIgnoreCase);
                 int value;
 
                 if (isDownDirection)

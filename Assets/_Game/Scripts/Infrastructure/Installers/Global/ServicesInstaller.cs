@@ -35,7 +35,5 @@ namespace Core.Infrastructure.Installers.Global
                 .AsSingle()
                 .NonLazy();
         }
-
-        
     }
 }

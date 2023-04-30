@@ -10,8 +10,8 @@ namespace Core.Infrastructure.Services.Global
 
         private GameData _gameData;
 
-        public void SetGameData(GameData gameConfig) =>
-            _gameData = gameConfig;
+        public void SetGameData(GameData gameData) =>
+            _gameData = gameData;
 
         public GameData GetGameData() => _gameData;
 

@@ -19,14 +19,9 @@ namespace Core.Infrastructure.Services.Global
 
         private bool _loadingInProgress;
 
-        public void LoadScene(SceneID sceneID)
-        {
-            if (_loadingInProgress)
-                return;
+        public void LoadScene(SceneID sceneID) =>
+            LoadScene(sceneID, callback: null);
 
-            _coroutineRunner.StartCoroutine(SceneLoaderCO(sceneID));
-        }
-        
         public void LoadScene(SceneID sceneID, Action callback)
         {
             if (_loadingInProgress)

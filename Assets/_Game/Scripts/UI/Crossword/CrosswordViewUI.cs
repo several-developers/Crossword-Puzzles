@@ -41,7 +41,7 @@ namespace Core.UI.Crossword
 
         [SerializeField]
         private CrosswordViewShakeAnimation _crosswordViewShakeAnimation;
-        
+
         private ICrosswordService _crosswordService;
         private ISaveAndLoadService _saveAndLoadService;
         private CrosswordViewLogic _crosswordViewLogic;
@@ -61,18 +61,20 @@ namespace Core.UI.Crossword
             DebugEvents.OnCreateCrossword -= OnCreateCrossword;
         }
 
-        private void OnOkClicked() =>
-            _crosswordViewLogic.ClickLogic();
-
-        private void OnCreateCrossword() => DebugCreateCrossword();
-        
-        [ContextMenu("Create Crossword")]
-        private void DebugCreateCrossword()
+        private void RecreateCrossword()
         {
             _saveAndLoadService.Load();
             _crosswordService.UpdateAnswersData();
             _crosswordViewLogic.CreateCrossword();
         }
+
+        private void OnOkClicked() =>
+            _crosswordViewLogic.ClickLogic();
+
+        private void OnCreateCrossword() => RecreateCrossword();
+
+        [ContextMenu("Create Crossword")]
+        private void DebugCreateCrossword() => RecreateCrossword();
 
         [ContextMenu("Start Shake Animation")]
         private void DebugStartShakeAnimation() =>

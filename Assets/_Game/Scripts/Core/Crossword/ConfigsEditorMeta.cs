@@ -59,7 +59,6 @@ namespace Core.Crossword
         private void LoadInEditorConfigs()
         {
             ConfigProvider configProvider = new();
-
             _gameConfig = configProvider.GetGameConfig();
             _crosswordConfig = configProvider.GetCrosswordConfig();
         }

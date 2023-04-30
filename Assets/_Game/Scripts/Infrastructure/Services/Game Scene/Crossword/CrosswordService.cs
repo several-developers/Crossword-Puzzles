@@ -15,13 +15,11 @@ namespace Core.Infrastructure.Services.GameScene
         {
             _configProvider = configProvider;
             _answersDataDictionary = new();
-            _errorBehaviour = _configProvider.GetGameConfig().errorBehaviour;
 
             SetupAnswersDataDictionary();
         }
 
         private readonly IConfigProvider _configProvider;
-        private readonly ErrorBehaviour _errorBehaviour;
         private readonly Dictionary<int, AnswerData> _answersDataDictionary;
 
         public bool TryFindMatchWord(int hashCode) =>
@@ -42,8 +40,6 @@ namespace Core.Infrastructure.Services.GameScene
 
             return new AnswerData();
         }
-
-        public ErrorBehaviour GetErrorBehaviour() => _errorBehaviour;
 
         public void UpdateAnswersData()
         {
