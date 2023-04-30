@@ -50,3 +50,4 @@ MonoBehaviour:
       direction: across
       column: 4
       row: 7
+  _autoRecreateCrossword: 1

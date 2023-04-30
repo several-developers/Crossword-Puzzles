@@ -8,7 +8,7 @@ namespace Core.Infrastructure.Services.Global
     {
         public SaveAndLoadDataService(IGameDataService gameDataService)
         {
-            _gameDataPath = Application.persistentDataPath + Constants.GameDataJson;
+            _gameDataPath = Application.persistentDataPath + Constants.GameDataPath;
             _gameDataService = gameDataService;
             _gameData = gameDataService.GetGameData();
 

@@ -77,7 +77,12 @@ namespace Core.Editor
             GUILayout.Label("----- Config Buttons -----", labelStyle);
 
             if (GUILayout.Button(SaveConfigs))
+            {
                 _configsEditorMeta.SaveConfigs();
+                
+                if (_configsEditorMeta.AutoRecreateCrossword)
+                    DebugEvents.SendCreateCrossword();
+            }
 
             if (GUILayout.Button(LoadConfigs))
                 _configsEditorMeta.LoadConfigs();

@@ -12,7 +12,7 @@ namespace Core.Infrastructure.Services.Global
             _configProvider = configProvider;
 
         private readonly IConfigProvider _configProvider;
-        
+
         public void Save()
         {
             GameConfig gameConfig = _configProvider.GetGameConfig();
@@ -22,11 +22,15 @@ namespace Core.Infrastructure.Services.Global
 
             SaveConfig(gameConfig);
             SaveConfig(crosswordConfig);
+
+#if UNITY_EDITOR
+            UnityEditor.AssetDatabase.Refresh();
+#endif
         }
 
         public void Load() =>
             _configProvider.LoadConfigs();
-        
+
         private static async void SaveConfig<T>(T t) where T : IConfig
         {
             string configJson = JsonUtility.ToJson(t);
