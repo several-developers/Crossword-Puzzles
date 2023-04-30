@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Core.Crossword;
 using Core.Enums;
-using Core.Infrastructure.Data.Crossword;
-using Core.Infrastructure.Data.Player;
-using Core.Infrastructure.Services.Global;
+using Core.Infrastructure.Config.Crossword;
+using Core.Infrastructure.Providers.Global.Config;
 using Core.Utilities;
 using UnityEngine;
 
@@ -12,16 +11,16 @@ namespace Core.Infrastructure.Services.GameScene
 {
     public class CrosswordService : ICrosswordService
     {
-        public CrosswordService(IGameDataService gameDataService)
+        public CrosswordService(IConfigProvider configProvider)
         {
-            _gameDataService = gameDataService;
+            _configProvider = configProvider;
             _answersDataDictionary = new();
-            _errorBehaviour = gameDataService.GetPlayerData().errorBehaviour;
-            
+            _errorBehaviour = _configProvider.GetGameConfig().errorBehaviour;
+
             SetupAnswersDataDictionary();
         }
-        
-        private readonly IGameDataService _gameDataService;
+
+        private readonly IConfigProvider _configProvider;
         private readonly ErrorBehaviour _errorBehaviour;
         private readonly Dictionary<int, AnswerData> _answersDataDictionary;
 
@@ -40,7 +39,7 @@ namespace Core.Infrastructure.Services.GameScene
 
                 return answerData;
             }
-            
+
             return new AnswerData();
         }
 
@@ -54,9 +53,9 @@ namespace Core.Infrastructure.Services.GameScene
 
         private void SetupAnswersDataDictionary()
         {
-            CrosswordData crosswordData = _gameDataService.GetCrosswordData();
+            CrosswordConfig crosswordConfig = _configProvider.GetCrosswordConfig();
 
-            foreach (WordData wordData in crosswordData.wordsData)
+            foreach (WordData wordData in crosswordConfig.wordsData)
             {
                 int hashCode = wordData.answer.ToLower().GetHashCode();
 
@@ -75,10 +74,10 @@ namespace Core.Infrastructure.Services.GameScene
         {
             if (!_answersDataDictionary.ContainsKey(hashCode))
                 return false;
-            
+
             string errorLog = Log.Print("<rb>Collision</rb> was found!");
             Debug.LogError(errorLog);
-            
+
             return true;
         }
     }

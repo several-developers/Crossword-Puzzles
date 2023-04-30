@@ -2,7 +2,7 @@
 {
     public interface ISaveAndLoadService
     {
-        void SaveGameData();
-        void LoadGameData();
+        void Save();
+        void Load();
     }
 }

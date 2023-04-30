@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Core.Crossword;
 using Core.Enums;
-using Core.Infrastructure.Data.Crossword;
+using Core.Infrastructure.Config.Crossword;
+using Core.Infrastructure.Providers.Global.Config;
 using Core.Infrastructure.Services.GameScene;
-using Core.Infrastructure.Services.Global;
 using Core.UI.Utilities;
 using Core.Utilities;
 using TMPro;
@@ -14,13 +14,13 @@ namespace Core.UI.Crossword
 {
     public class CrosswordViewLogic
     {
-        public CrosswordViewLogic(ICrosswordService crosswordService, IGameDataService gameDataService,
+        public CrosswordViewLogic(ICrosswordService crosswordService, IConfigProvider configProvider,
             CellItemUI cellItemPrefab, Transform cellsContainer, MonoBehaviour coroutineRunner,
             GridLayoutGroup gridLayoutGroup, TMP_InputField playerIF, AudioSource errorSoundAs,
             CrosswordViewShakeAnimation crosswordViewShakeAnimation)
         {
             _crosswordService = crosswordService;
-            _gameDataService = gameDataService;
+            _configProvider = configProvider;
             _playerIF = playerIF;
             _errorSoundAs = errorSoundAs;
             _crosswordViewShakeAnimation = crosswordViewShakeAnimation;
@@ -32,7 +32,7 @@ namespace Core.UI.Crossword
         }
         
         private readonly ICrosswordService _crosswordService;
-        private readonly IGameDataService _gameDataService;
+        private readonly IConfigProvider _configProvider;
         private readonly CrosswordBuilder _crosswordBuilder;
         private readonly CrosswordAnimation _crosswordAnimation;
         private readonly LayoutFixHelper _layoutFixHelper;
@@ -71,7 +71,7 @@ namespace Core.UI.Crossword
         
         private void UpdateCrosswordView()
         {
-            WordData[] wordsDataArray = _gameDataService.GetCrosswordData().wordsData;
+            WordData[] wordsDataArray = _configProvider.GetCrosswordConfig().wordsData;
             
             foreach (WordData wordData in wordsDataArray)
             {

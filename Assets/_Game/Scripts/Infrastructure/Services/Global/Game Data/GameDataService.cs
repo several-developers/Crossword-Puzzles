@@ -1,5 +1,4 @@
 using Core.Infrastructure.Data;
-using Core.Infrastructure.Data.Crossword;
 using Core.Infrastructure.Data.Player;
 
 namespace Core.Infrastructure.Services.Global
@@ -11,15 +10,12 @@ namespace Core.Infrastructure.Services.Global
 
         private GameData _gameData;
 
-        public void SetGameData(GameData gameData) =>
-            _gameData = gameData;
+        public void SetGameData(GameData gameConfig) =>
+            _gameData = gameConfig;
 
         public GameData GetGameData() => _gameData;
 
         public PlayerData GetPlayerData() =>
             _gameData.playerData;
-        
-        public CrosswordData GetCrosswordData() =>
-            _gameData.crosswordData;
     }
 }

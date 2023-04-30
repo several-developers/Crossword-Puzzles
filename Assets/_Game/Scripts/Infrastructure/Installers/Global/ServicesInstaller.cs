@@ -10,7 +10,6 @@ namespace Core.Infrastructure.Installers.Global
             BindGameDataService();
             BindSaveAndLoadService();
             BindScenesLoaderService();
-            BindCrosswordValidationService();
         }
 
         private void BindGameDataService()
@@ -24,7 +23,7 @@ namespace Core.Infrastructure.Installers.Global
         private void BindSaveAndLoadService()
         {
             Container
-                .BindInterfacesTo<SaveAndLoadService>()
+                .BindInterfacesTo<SaveAndLoadDataService>()
                 .AsSingle()
                 .NonLazy();
         }
@@ -37,12 +36,6 @@ namespace Core.Infrastructure.Installers.Global
                 .NonLazy();
         }
 
-        private void BindCrosswordValidationService()
-        {
-            Container
-                .BindInterfacesTo<CrosswordValidationService>()
-                .AsSingle()
-                .NonLazy();
-        }
+        
     }
 }
