@@ -46,5 +46,13 @@ namespace Core.Crossword
                     
             Debug.LogError(errorLog);
         }
+
+        public static void LogDifferentCharsInCommonCellError(string answer, int column, int row)
+        {
+            string errorLog = Log.Print(Fail + "Reason: <rb>Different Letters In Common Cell</rb>, " + 
+                                        $"answer: <gb>{answer}</gb>, column: <gb>{column}</gb>, row: <gb>{row}</gb>.");
+                    
+            Debug.LogError(errorLog);
+        }
     }
 }

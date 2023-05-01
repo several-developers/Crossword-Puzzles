@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Core.Crossword;
 using Core.Enums;
 using Core.Infrastructure.Config.Crossword;
@@ -22,7 +23,7 @@ namespace Core.Infrastructure.Services.BootstrapScene
 
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly CrosswordConfig _crosswordConfig;
-        
+
         private const int Columns = 10;
         private const int Rows = 10;
 
@@ -33,24 +34,29 @@ namespace Core.Infrastructure.Services.BootstrapScene
         {
             if (!CheckForEmptyAnswers())
                 yield break;
-            
+
             yield return new WaitForEndOfFrame();
-            
+
             if (!CheckForSimilarWords())
                 yield break;
-            
+
             yield return new WaitForEndOfFrame();
 
             if (!CheckForCorrectDirections())
                 yield break;
-            
+
             yield return new WaitForEndOfFrame();
 
             if (!CheckForOutOfBounce())
                 yield break;
-            
+
             yield return new WaitForEndOfFrame();
-            
+
+            if (!CheckForDifferentCharsInCommonCell())
+                yield break;
+
+            yield return new WaitForEndOfFrame();
+
             OnValidationFinished?.Invoke(ValidateResult.Success);
         }
 
@@ -92,13 +98,13 @@ namespace Core.Infrastructure.Services.BootstrapScene
 
             return true;
         }
-        
+
         private bool CheckForCorrectDirections()
         {
             foreach (WordData wordData in _crosswordConfig.wordsData)
             {
                 bool isDirectionEmpty = string.IsNullOrWhiteSpace(wordData.direction);
-                
+
                 if (isDirectionEmpty)
                 {
                     CrosswordValidationLogs.LogWrongDirectionError(wordData.answer, wordData.direction);
@@ -106,9 +112,8 @@ namespace Core.Infrastructure.Services.BootstrapScene
                     return false;
                 }
 
-                bool isDirectionWrong =
-                    !string.Equals(wordData.direction, "down", StringComparison.OrdinalIgnoreCase) &&
-                    !string.Equals(wordData.direction, "across", StringComparison.OrdinalIgnoreCase);
+                wordData.direction.GetWordDirection(out Direction direction);
+                bool isDirectionWrong = direction == Direction.Wrong;
 
                 if (isDirectionWrong)
                 {
@@ -117,7 +122,7 @@ namespace Core.Infrastructure.Services.BootstrapScene
                     return false;
                 }
             }
-            
+
             return true;
         }
 
@@ -136,16 +141,23 @@ namespace Core.Infrastructure.Services.BootstrapScene
                     return false;
                 }
 
-                bool isDownDirection = string.Equals(wordData.direction, "down", StringComparison.OrdinalIgnoreCase);
                 int value;
+                bool isWordOutOfBounce = false;
+                wordData.direction.GetWordDirection(out Direction direction);
 
-                if (isDownDirection)
-                    value = y + wordData.answer.Length;
-                else
-                    value = x + wordData.answer.Length;
+                switch (direction)
+                {
+                    case Direction.Across:
+                        value = x + wordData.answer.Length;
+                        isWordOutOfBounce = value >= Columns;
+                        break;
 
-                bool isWordOutOfBounce = isDownDirection ? value >= Rows : value >= Columns;
-                
+                    case Direction.Down:
+                        value = y + wordData.answer.Length;
+                        isWordOutOfBounce = value >= Rows;
+                        break;
+                }
+
                 if (isWordOutOfBounce)
                 {
                     CrosswordValidationLogs.LogWordOutOfBounceError(wordData.answer);
@@ -154,6 +166,69 @@ namespace Core.Infrastructure.Services.BootstrapScene
                 }
             }
 
+            return true;
+        }
+
+        private bool CheckForDifferentCharsInCommonCell()
+        {
+            WordData[] wordsData = _crosswordConfig.wordsData;
+            Dictionary<GridPosition, char> charsDictionary = new(capacity: 100);
+            string answer;
+            int column;
+            int row;
+
+            foreach (WordData wordData in wordsData)
+            {
+                answer = wordData.answer.ToLower();
+                int length = answer.Length;
+                column = wordData.column;
+                row = wordData.row;
+                wordData.direction.GetWordDirection(out Direction direction);
+
+                for (int i = 0; i < length; i++)
+                {
+                    bool isCharsEqual = CheckCharInDictionary(i);
+                    
+                    if (!isCharsEqual)
+                    {
+                        CrosswordValidationLogs.LogDifferentCharsInCommonCellError(wordData.answer, column, row);
+                        OnValidationFinished?.Invoke(ValidateResult.Fail);
+                        return false;
+                    }
+
+                    AddDirection(direction);
+                }
+            }
+
+            bool CheckCharInDictionary(int i)
+            {
+                GridPosition gridPosition = new(column, row);
+                bool containsChar = charsDictionary.ContainsKey(gridPosition);
+                    
+                if (containsChar)
+                {
+                    bool isCharsEqual = charsDictionary[gridPosition] == answer[i];
+                    return isCharsEqual;
+                }
+
+                charsDictionary.Add(gridPosition, answer[i]);
+                return true;
+            }
+
+            void AddDirection(Direction direction)
+            {
+                switch (direction)
+                {
+                    case Direction.Across:
+                        column++;
+                        break;
+                        
+                    case Direction.Down:
+                        row++;
+                        break;
+                }
+            }
+            
             return true;
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Core.Crossword;
 using Core.Enums;
 using Core.Infrastructure.Config.Crossword;
@@ -28,11 +27,15 @@ namespace Core.Infrastructure.Services.GameScene
         public AnswerData GetAnswerData(int hashCode) =>
             TryFindMatchWord(hashCode) ? _answersDataDictionary[hashCode] : new AnswerData();
 
-        public AnswerData GetAnswerData(int column, int row)
+        public AnswerData GetAnswerData(int column, int row, Direction direction)
         {
             foreach (AnswerData answerData in _answersDataDictionary.Values)
             {
-                if (answerData.Column != column || answerData.Row != row)
+                bool isMatch = answerData.Column == column &&
+                               answerData.Row == row &&
+                               answerData.Direction == direction;
+                
+                if (!isMatch)
                     continue;
 
                 return answerData;
@@ -59,8 +62,7 @@ namespace Core.Infrastructure.Services.GameScene
                     break;
 
                 int length = wordData.answer.Length;
-                bool isDown = string.Equals(wordData.direction.ToLower(), "down", StringComparison.OrdinalIgnoreCase);
-                Direction direction = isDown ? Direction.Down : Direction.Across;
+                wordData.direction.GetWordDirection(out Direction direction);
                 AnswerData answerData = new(direction, wordData.column, wordData.row, length);
                 _answersDataDictionary.Add(hashCode, answerData);
             }

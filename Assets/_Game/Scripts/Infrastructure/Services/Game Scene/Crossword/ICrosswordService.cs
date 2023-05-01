@@ -1,4 +1,5 @@
 ﻿using Core.Crossword;
+using Core.Enums;
 
 namespace Core.Infrastructure.Services.GameScene
 {
@@ -6,7 +7,7 @@ namespace Core.Infrastructure.Services.GameScene
     {
         bool TryFindMatchWord(int hashCode);
         AnswerData GetAnswerData(int hashCode);
-        AnswerData GetAnswerData(int column, int row);
+        AnswerData GetAnswerData(int column, int row, Direction direction);
         void UpdateAnswersData();
     }
 }

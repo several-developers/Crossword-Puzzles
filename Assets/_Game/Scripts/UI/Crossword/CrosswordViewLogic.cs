@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.Crossword;
 using Core.Enums;
 using Core.Infrastructure.Config.Crossword;
@@ -75,7 +76,8 @@ namespace Core.UI.Crossword
             
             foreach (WordData wordData in wordsDataArray)
             {
-                AnswerData answerData = _crosswordService.GetAnswerData(wordData.column, wordData.row);
+                wordData.direction.GetWordDirection(out Direction direction);
+                AnswerData answerData = _crosswordService.GetAnswerData(wordData.column, wordData.row, direction);
                 SetWord(wordData, answerData);
             }
         }
@@ -86,12 +88,12 @@ namespace Core.UI.Crossword
             {
                 int column = answerData.Column;
                 int row = answerData.Row;
-
+                
                 if (answerData.Direction == Direction.Across)
                     column += i;
                 else
                     row += i;
-
+                
                 SetChar(column, row, wordData.answer[i]);
             }
         }
